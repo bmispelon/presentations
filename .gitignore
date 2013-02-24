@@ -1,3 +1,6 @@
+# Builds
+builds/
+
 *.py[cod]
 
 # C extensions
