@@ -1,6 +1,9 @@
 # Builds
 builds/
 
+# Virtualenv
+env/
+
 *.py[cod]
 
 # C extensions
