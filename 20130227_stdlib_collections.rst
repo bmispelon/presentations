@@ -208,7 +208,7 @@ Initialization
 
     deque() # deque([])
     deque('abc') # deque(['a', 'b', 'c'])
-    deque(xrange(10000, 0, -1), maxlen=3)
+    deque(xrange(1000, 0, -1), maxlen=3)
     # ?
 
 Initialization
@@ -217,7 +217,7 @@ Initialization
 
     deque() # deque([])
     deque('abc') # deque(['a', 'b', 'c'])
-    deque(xrange(10000, 0, -1), maxlen=3)
+    deque(xrange(1000, 0, -1), maxlen=3)
     # deque([3, 2, 1], maxlen=3)
 
 
@@ -249,7 +249,7 @@ Option 2: More Robust
         for line in f:
             last.append(line)
             if len(last) > 20:
-                last = last[1:] ###
+                last.pop(0) ###
     print "\n".join(last)
 
 
@@ -295,30 +295,120 @@ Factory examples:
 -----------------
 .. class:: borderless
 
-    =======    =========
-    bool       
-    int        
-    float      
-    complex    
-    str        
-    list       
-    dict       
-    =======    =========
+    =========    =========
+    bool()       
+    int()        
+    float()      
+    complex()    
+    str()        
+    list()       
+    dict()       
+    =========    =========
 
 
 Factory examples:
 -----------------
 .. class:: borderless
 
-    =======    =========
-    bool       ``False``
-    int        ``0``
-    float      ``0.0``
-    complex    ``0j``
-    str        ``''``
-    list       ``[]``
-    dict       ``{}``
-    =======    =========
+    =========    =========
+    bool()       ``False``
+    int()        
+    float()      
+    complex()    
+    str()        
+    list()       
+    dict()       
+    =========    =========
+
+
+Factory examples:
+-----------------
+.. class:: borderless
+
+    =========    =========
+    bool()       ``False``
+    int()        ``0``
+    float()      
+    complex()    
+    str()        
+    list()       
+    dict()       
+    =========    =========
+
+
+Factory examples:
+-----------------
+.. class:: borderless
+
+    =========    =========
+    bool()       ``False``
+    int()        ``0``
+    float()      ``0.0``
+    complex()    
+    str()        
+    list()       
+    dict()       
+    =========    =========
+
+
+Factory examples:
+-----------------
+.. class:: borderless
+
+    =========    =========
+    bool()       ``False``
+    int()        ``0``
+    float()      ``0.0``
+    complex()    ``0j``
+    str()        
+    list()       
+    dict()       
+    =========    =========
+
+
+Factory examples:
+-----------------
+.. class:: borderless
+
+    =========    =========
+    bool()       ``False``
+    int()        ``0``
+    float()      ``0.0``
+    complex()    ``0j``
+    str()        ``''``
+    list()       
+    dict()       
+    =========    =========
+
+
+Factory examples:
+-----------------
+.. class:: borderless
+
+    =========    =========
+    bool()       ``False``
+    int()        ``0``
+    float()      ``0.0``
+    complex()    ``0j``
+    str()        ``''``
+    list()       ``[]``
+    dict()       
+    =========    =========
+
+
+Factory examples:
+-----------------
+.. class:: borderless
+
+    =========    =========
+    bool()       ``False``
+    int()        ``0``
+    float()      ``0.0``
+    complex()    ``0j``
+    str()        ``''``
+    list()       ``[]``
+    dict()       ``{}``
+    =========    =========
 
 
 Missing Keys
@@ -435,56 +525,6 @@ Option 3: defaultdict
         d[date].append(amount)
 
 
-Formatting With Defaults
-------------------------
-.. sourcecode:: python
-
-    d = dict(y='yes')
-    '%(y)s %(n)s' % d
-    # ?
-
-
-Formatting With Defaults
-------------------------
-.. sourcecode:: python
-
-    d = dict(y='yes')
-    '%(y)s %(n)s' % d
-    # KeyError: 'n'
-
-
-Formatting With Defaults
-------------------------
-.. sourcecode:: python
-
-    factory = lambda: 'no'
-    d = defaultdict(factory, y='yes')
-    '%(y)s %(n)s' % d
-    # ?
-
-
-Formatting With Defaults
-------------------------
-.. sourcecode:: python
-
-    factory = lambda: 'no'
-    d = defaultdict(factory, y='yes')
-    '%(y)s %(n)s' % d
-    # 'yes no'
-
-
-Auto-vivifying Tree
--------------------
-.. sourcecode:: python
-
-    # don't try this at home!
-    def factory():
-        return defaultdict(factory)
-    d = defaultdict(factory)
-    
-    d['a']['b']['c'] = 42
-
-
 3: collections.namedtuple
 -------------------------
 
@@ -508,6 +548,7 @@ Initialization
 --------------
 .. sourcecode:: python
 
+    # cls = namedtuple(name, fields)
     namedtuple('Point', ['x', 'y', 'z'])
     namedtuple('Point', 'x y z')
     namedtuple('Point', 'x,y,z')
@@ -517,6 +558,7 @@ Initialization
 --------------
 .. sourcecode:: python
 
+    # cls = namedtuple(name, fields)
     namedtuple('Point', ['x', 'y', 'z'])
     namedtuple('Point', 'x y z')
     namedtuple('Point', 'x,y,z')
@@ -529,7 +571,7 @@ Accessing Fields
 .. sourcecode:: python
 
     Point = namedtuple('Point', 'x y z')
-    p = Point(x=23, y=10, z=85)
+    p = Point(z=85, y=10, x=23)
     p[0] # ?
 
 
@@ -538,7 +580,7 @@ Accessing Fields
 .. sourcecode:: python
 
     Point = namedtuple('Point', 'x y z')
-    p = Point(x=23, y=10, z=85)
+    p = Point(z=85, y=10, x=23)
     p[0] # 23
 
 
@@ -547,7 +589,7 @@ Accessing Fields
 .. sourcecode:: python
 
     Point = namedtuple('Point', 'x y z')
-    p = Point(x=23, y=10, z=85)
+    p = Point(z=85, y=10, x=23)
     p[0] # 23
     p.z  # ?
 
@@ -557,7 +599,7 @@ Accessing Fields
 .. sourcecode:: python
 
     Point = namedtuple('Point', 'x y z')
-    p = Point(x=23, y=10, z=85)
+    p = Point(z=85, y=10, x=23)
     p[0] # 23
     p.z  # 85
 
@@ -636,6 +678,12 @@ Initialization
 --------------
 
 Identical to dict.
+
+.. sourcecode:: python
+
+    OrderedDict(mapping)
+    OrderedDict(iterable)
+    OrderedDict(**kwargs)
 
 
 dict Has No Order
@@ -820,7 +868,7 @@ Dict subclass for counting hashable objects.
 
 Introduced in python 2.7.
 
-Basically a defaultdict(int),  
+Basically a ``defaultdict(int)``,
 with some useful methods added.
 
 
@@ -829,11 +877,9 @@ Initialization
 
 .. sourcecode:: python
 
-    Counter(some_iterable)
-    # dict (keys)
-    # list
-    # generator
-    # str (characters)
+    Counter(iterable)
+
+Iterable: list, str, dict, generator, ...
 
 
 Counting Characters
@@ -879,64 +925,6 @@ Counting Characters
     # Finally, with a Counter
     counter = Counter('ababac')
     counter['a'] # 3
-
-
-Letters Only
-------------
-.. sourcecode:: python
-
-    s = 'a,b.a:a?b'
-    Counter(c for c in s
-            if c.isalpha())
-    # ?
-
-
-Letters Only
-------------
-.. sourcecode:: python
-
-    s = 'a,b.a:a?b'
-    Counter(c for c in s
-            if c.isalpha())
-    # Counter({'a': 3, 'b': 2})
-
-
-Letters Only (CI)
------------------
-.. sourcecode:: python
-
-    s = 'a,b.A:A?B'
-    Counter(c.lower() for c in s
-            if c.isalpha())
-    # ?
-
-
-Letters Only (CI)
------------------
-.. sourcecode:: python
-
-    s = 'a,b.A:A?B'
-    Counter(c.lower() for c in s
-            if c.isalpha())
-    # Counter({'a': 3, 'b': 2})
-
-
-Couting words
--------------
-.. sourcecode:: python
-
-    text = 'foo bar foo'
-    Counter(text.split())
-    # ?
-
-
-Couting words
--------------
-.. sourcecode:: python
-
-    text = 'foo bar foo'
-    Counter(text.split())
-    # Counter({'foo': 2, 'bar': 1})
 
 
 Counter Is A dict!
@@ -999,26 +987,6 @@ Counter Is A dict!
 ------------------
 .. sourcecode:: python
 
-    # Freeze the counter:
-    counter = Counter('aaabbc')
-    dict(counter)
-    # ?
-
-
-Counter Is A dict!
-------------------
-.. sourcecode:: python
-
-    # Freeze the counter:
-    counter = Counter('aaabbc')
-    dict(counter)
-    # {'a': 3, 'b': 2, 'c': 1}
-
-
-Counter Is A dict!
-------------------
-.. sourcecode:: python
-
     # List of unique elements:
     counter = Counter('aaabbc')
     counter.keys()
@@ -1033,6 +1001,24 @@ Counter Is A dict!
     counter = Counter('aaabbc')
     counter.keys()
     # ['a', 'b', 'c']
+
+
+Counter Is A dict!
+------------------
+.. sourcecode:: python
+
+    # Total number of unique elements:
+    counter = Counter('aaabbc')
+    len(counter) # ?
+
+
+Counter Is A dict!
+------------------
+.. sourcecode:: python
+
+    # Total number of unique elements:
+    counter = Counter('aaabbc')
+    len(counter) # 3
 
 
 Counter.elements()
@@ -1226,3 +1212,115 @@ Questions?
 * https://github.com/bmispelon (for slides)
 * twitter: @bmispelon
 * IRC: bmispelon on Freenode (#python, #django)
+
+
+Bonus: Recipes
+--------------
+
+
+Formatting With Defaults
+------------------------
+.. sourcecode:: python
+
+    d = dict(y='yes')
+    '%(y)s %(n)s' % d
+    # ?
+
+
+Formatting With Defaults
+------------------------
+.. sourcecode:: python
+
+    d = dict(y='yes')
+    '%(y)s %(n)s' % d
+    # KeyError: 'n'
+
+
+Formatting With Defaults
+------------------------
+.. sourcecode:: python
+
+    factory = lambda: 'no'
+    d = defaultdict(factory, y='yes')
+    '%(y)s %(n)s' % d
+    # ?
+
+
+Formatting With Defaults
+------------------------
+.. sourcecode:: python
+
+    factory = lambda: 'no'
+    d = defaultdict(factory, y='yes')
+    '%(y)s %(n)s' % d
+    # 'yes no'
+
+
+Auto-vivifying Tree
+-------------------
+.. sourcecode:: python
+
+    # don't try this at home!
+    def factory():
+        return defaultdict(factory)
+    d = defaultdict(factory)
+    
+    d['a']['b']['c'] = 42
+
+
+Counting Letters
+----------------
+.. sourcecode:: python
+
+    s = 'a,b.a:a?b'
+    Counter(c for c in s
+            if c.isalpha())
+    # ?
+
+
+Counting Letters
+----------------
+.. sourcecode:: python
+
+    s = 'a,b.a:a?b'
+    Counter(c for c in s
+            if c.isalpha())
+    # Counter({'a': 3, 'b': 2})
+
+
+Counting Letters (CI)
+---------------------
+.. sourcecode:: python
+
+    s = 'a,b.A:A?B'
+    Counter(c.lower() for c in s
+            if c.isalpha())
+    # ?
+
+
+Counting Letters (CI)
+---------------------
+.. sourcecode:: python
+
+    s = 'a,b.A:A?B'
+    Counter(c.lower() for c in s
+            if c.isalpha())
+    # Counter({'a': 3, 'b': 2})
+
+
+Couting words
+-------------
+.. sourcecode:: python
+
+    text = 'foo bar foo'
+    Counter(text.split())
+    # ?
+
+
+Couting words
+-------------
+.. sourcecode:: python
+
+    text = 'foo bar foo'
+    Counter(text.split())
+    # Counter({'foo': 2, 'bar': 1})
