@@ -5,6 +5,13 @@ Rediscovering the stdlib
 
 The collections module
 
+.. sourcecode:: python
+
+    from collections import (
+        deque, defaultdict, namedtuple,
+        OrderedDict, Counter
+    )
+
 
 About me
 --------
@@ -43,16 +50,12 @@ but they are easy to miss if you don't know about them.
 
 What is this talk about?
 ------------------------
-.. sourcecode:: python
 
-    from collections import (
-        deque,       # 2.4
-        defaultdict, # 2.5
-        namedtuple,  # 2.6
-        OrderedDict, # 2.7
-        Counter,     # 2.7
-        abc,         # Not covered here
-    )
+The :navy:`collections` module.
+
+5 specialized container datatypes.
+
+ABC (not presented today).
 
 
 1: collections.deque
@@ -69,28 +72,84 @@ Time Complexity
 ---------------
 .. table::
 
-    ===========    ====
-    Operation      list
-    ===========    ====
-    append         O(1)
-    pop (right)    O(1)
-    prepend        O(n)
-    pop (left)     O(n)
-    ===========    ====
+    ===========    ====    =====
+    Operation      list    deque
+    ===========    ====    =====
+    append                  
+    pop (right)             
+    prepend                 
+    pop (left)              
+    ===========    ====    =====
 
 
 Time Complexity
 ---------------
 .. table::
 
-    ===========    =====
-    Operation      deque
-    ===========    =====
-    append         O(1)
-    pop (right)    O(1)
-    prepend        O(1)
-    pop (left)     O(1)
-    ===========    =====
+    ===========    ====    =====
+    Operation      list    deque
+    ===========    ====    =====
+    append         O(1)     
+    pop (right)             
+    prepend                 
+    pop (left)              
+    ===========    ====    =====
+
+
+Time Complexity
+---------------
+.. table::
+
+    ===========    ====    =====
+    Operation      list    deque
+    ===========    ====    =====
+    append         O(1)     
+    pop (right)    O(1)     
+    prepend                 
+    pop (left)              
+    ===========    ====    =====
+
+
+Time Complexity
+---------------
+.. table::
+
+    ===========    ====    =====
+    Operation      list    deque
+    ===========    ====    =====
+    append         O(1)     
+    pop (right)    O(1)     
+    prepend        O(n)     
+    pop (left)              
+    ===========    ====    =====
+
+
+Time Complexity
+---------------
+.. table::
+
+    ===========    ====    =====
+    Operation      list    deque
+    ===========    ====    =====
+    append         O(1)     
+    pop (right)    O(1)     
+    prepend        O(n)     
+    pop (left)     O(n)     
+    ===========    ====    =====
+
+
+Time Complexity
+---------------
+.. table::
+
+    ===========    ====    =====
+    Operation      list    deque
+    ===========    ====    =====
+    append         O(1)    O(1)
+    pop (right)    O(1)    O(1)
+    prepend        O(n)    O(1)
+    pop (left)     O(n)    O(1)
+    ===========    ====    =====
 
 
 Operations
@@ -111,30 +170,55 @@ Initialization
 --------------
 .. sourcecode:: python
 
-    >>> deque()
-    deque([])
+    deque(iterable, maxlen=None)
 
+Both parameters are optional.
 
-Initialization
---------------
-.. sourcecode:: python
-
-    >>> deque()
-    deque([])
-    >>> deque('abcdef')
-    deque(['a', 'b', 'c', 'd', 'e', 'f'])
-
+Iterable: list, str, dict, generator, ...
 
 Initialization
 --------------
 .. sourcecode:: python
 
-    >>> deque()
-    deque([])
-    >>> deque('abcdef')
-    deque(['a', 'b', 'c', 'd', 'e', 'f'])
-    >>> deque('abcdef', maxlen=3)
-    deque(['d', 'e', 'f'], maxlen=3)
+    deque() # ?
+
+Initialization
+--------------
+.. sourcecode:: python
+
+    deque() # deque([])
+
+Initialization
+--------------
+.. sourcecode:: python
+
+    deque() # deque([])
+    deque('abc') # ?
+
+Initialization
+--------------
+.. sourcecode:: python
+
+    deque() # deque([])
+    deque('abc') # deque(['a', 'b', 'c'])
+
+Initialization
+--------------
+.. sourcecode:: python
+
+    deque() # deque([])
+    deque('abc') # deque(['a', 'b', 'c'])
+    deque(xrange(10000, 0, -1), maxlen=3)
+    # ?
+
+Initialization
+--------------
+.. sourcecode:: python
+
+    deque() # deque([])
+    deque('abc') # deque(['a', 'b', 'c'])
+    deque(xrange(10000, 0, -1), maxlen=3)
+    # deque([3, 2, 1], maxlen=3)
 
 
 Practical Example
@@ -191,12 +275,50 @@ Initialization
 .. sourcecode:: python
 
     f = lambda: None # factory
-    defaultdict()
     defaultdict(f)
     defaultdict(f, {'foo': 'bar'})
     defaultdict(f, [('foo', 'bar')])
+    defaultdict(f, foo='bar')
 
-Note: if no factory is given, defaultdict behaves exactly like dict.
+
+What's a factory?
+-----------------
+
+Any callable without required arguments:
+
+* functions
+* classes
+* instance methods
+
+
+Factory examples:
+-----------------
+.. class:: borderless
+
+    =======    =========
+    bool       
+    int        
+    float      
+    complex    
+    str        
+    list       
+    dict       
+    =======    =========
+
+
+Factory examples:
+-----------------
+.. class:: borderless
+
+    =======    =========
+    bool       ``False``
+    int        ``0``
+    float      ``0.0``
+    complex    ``0j``
+    str        ``''``
+    list       ``[]``
+    dict       ``{}``
+    =======    =========
 
 
 Missing Keys
@@ -275,14 +397,6 @@ Missing Keys
     dd['missing'] # 'X'
 
 
-Example of factories
---------------------
-
-* bool, int, float, complex, str, list, dict, set, ...
-* lambda: defaultdict(int) (two-level deep)
-* {'a': 'b'}.copy
-
-
 Practical Example
 -----------------
 
@@ -321,24 +435,42 @@ Option 3: defaultdict
         d[date].append(amount)
 
 
-.format() With Defaults
------------------------
+Formatting With Defaults
+------------------------
 .. sourcecode:: python
 
-    factory = lambda: '___'
-    d = defaultdict(factory, foo='yes')
-    print('{foo} {bar}'.format(d))
+    d = dict(y='yes')
+    '%(y)s %(n)s' % d
     # ?
 
 
-.format() With Defaults
------------------------
+Formatting With Defaults
+------------------------
 .. sourcecode:: python
 
-    factory = lambda: '___'
-    d = defaultdict(factory, foo='yes')
-    print('{foo} {bar}'.format(d))
-    # 'yes ___'
+    d = dict(y='yes')
+    '%(y)s %(n)s' % d
+    # KeyError: 'n'
+
+
+Formatting With Defaults
+------------------------
+.. sourcecode:: python
+
+    factory = lambda: 'no'
+    d = defaultdict(factory, y='yes')
+    '%(y)s %(n)s' % d
+    # ?
+
+
+Formatting With Defaults
+------------------------
+.. sourcecode:: python
+
+    factory = lambda: 'no'
+    d = defaultdict(factory, y='yes')
+    '%(y)s %(n)s' % d
+    # 'yes no'
 
 
 Auto-vivifying Tree
@@ -710,10 +842,11 @@ Counting Characters
 
     # First approach, with a plain dict:
     counter = {}
-    for letter in s:
+    for letter in 'ababac':
         if letter not in counter:
             counter[letter] = 0
         counter[letter] += 1
+    counter['a'] # 3
 
 
 Counting Characters
@@ -722,9 +855,10 @@ Counting Characters
 
     # Improved:
     counter = {}
-    for letter in s:
+    for letter in 'ababac':
         current = counter.get(letter, 0)
         counter[letter] = current + 1
+    counter['a'] # 3
 
 
 Counting Characters
@@ -733,8 +867,9 @@ Counting Characters
 
     # Third approach, with a defaultdict
     counter = defaultdict(int)
-    for letter in s:
+    for letter in 'ababac':
         counter[letter] += 1
+    counter['a'] # 3
 
 
 Counting Characters
@@ -742,131 +877,104 @@ Counting Characters
 .. sourcecode:: python
 
     # Finally, with a Counter
-    counter = Counter(s) # done.
+    counter = Counter('ababac')
+    counter['a'] # 3
 
 
 Letters Only
 ------------
 .. sourcecode:: python
 
+    s = 'a,b.a:a?b'
     Counter(c for c in s
             if c.isalpha())
+    # ?
 
 
 Letters Only
 ------------
 .. sourcecode:: python
 
+    s = 'a,b.a:a?b'
     Counter(c for c in s
             if c.isalpha())
+    # Counter({'a': 3, 'b': 2})
+
+
+Letters Only (CI)
+-----------------
+.. sourcecode:: python
+
+    s = 'a,b.A:A?B'
     Counter(c.lower() for c in s
             if c.isalpha())
-    # Case-insensitive
+    # ?
+
+
+Letters Only (CI)
+-----------------
+.. sourcecode:: python
+
+    s = 'a,b.A:A?B'
+    Counter(c.lower() for c in s
+            if c.isalpha())
+    # Counter({'a': 3, 'b': 2})
 
 
 Couting words
 -------------
 .. sourcecode:: python
 
+    text = 'foo bar foo'
     Counter(text.split())
+    # ?
 
 
 Couting words
 -------------
 .. sourcecode:: python
 
+    text = 'foo bar foo'
     Counter(text.split())
-    # Simplistic: no handling of punctuation
+    # Counter({'foo': 2, 'bar': 1})
 
 
-Counter.elements()
-----------------------
+Counter Is A dict!
+------------------
 .. sourcecode:: python
 
-    c = Counter('ababac')
-    c.elements()
-    # ?
+    # Count for a given element:
+    counter = Counter('aaabbc')
+    counter['a'] # ?
 
 
-Counter.elements()
-----------------------
+Counter Is A dict!
+------------------
 .. sourcecode:: python
 
-    c = Counter('ababac')
-    c.elements()
-    # ['a', 'a', 'a', 'b', 'b', 'c']
+    # Count for a given element:
+    counter = Counter('aaabbc')
+    counter['a'] # 3
 
 
-Counter.most_common(N)
-----------------------
+Counter Is A dict!
+------------------
 .. sourcecode:: python
 
-    c = Counter('aaabbc')
-    c.most_common(1) # ?
+    # Count for a given element:
+    counter = Counter('aaabbc')
+    counter['a'] # 3
+    counter['d'] # ?
 
 
-Counter.most_common(N)
-----------------------
+Counter Is A dict!
+------------------
 .. sourcecode:: python
 
-    c = Counter('aaabbc')
-    c.most_common(1) # [('a', 3)]
-
-
-Counter.most_common(N)
-----------------------
-.. sourcecode:: python
-
-    c = Counter('aaabbc')
-    c.most_common(1) # [('a', 3)]
-    c.most_common()
-    # ?
-
-
-Counter.most_common(N)
-----------------------
-.. sourcecode:: python
-
-    c = Counter('aaabbc')
-    c.most_common(1) # [('a', 3)]
-    c.most_common()
-    # [('a', 3), ('b', 2), ('c', 1)]
-
-
-Counter.update()
-----------------
-.. sourcecode:: python
-
-    c = Counter('aaabb')
-    c.update(a=2, b=1)
-    c # ?
-
-
-Counter.update()
-----------------
-.. sourcecode:: python
-
-    c = Counter('aaabb')
-    c.update(a=2, b=1)
-    c # Counter({'a': 5, 'b': 3})
-
-
-Counter.substract()
--------------------
-.. sourcecode:: python
-
-    c = Counter('aaabb')
-    c.substract(a=2, b=1)
-    c # ?
-
-
-Counter.substract()
--------------------
-.. sourcecode:: python
-
-    c = Counter('aaabb')
-    c.substract(a=2, b=1)
-    c # Counter({'a': 1, 'b': 1})
+    # Count for a given element:
+    counter = Counter('aaabbc')
+    counter['a'] # 3
+    counter['d'] # 0
 
 
 Counter Is A dict!
@@ -927,42 +1035,94 @@ Counter Is A dict!
     # ['a', 'b', 'c']
 
 
-Counter Is A dict!
-------------------
+Counter.elements()
+----------------------
 .. sourcecode:: python
 
-    # Count for a given element:
-    counter = Counter('aaabbc')
-    counter['a'] # ?
+    c = Counter('ababac')
+    c.elements()
+    # ?
 
 
-Counter Is A dict!
-------------------
+Counter.elements()
+----------------------
 .. sourcecode:: python
 
-    # Count for a given element:
-    counter = Counter('aaabbc')
-    counter['a'] # 3
+    c = Counter('ababac')
+    c.elements()
+    # ['a', 'a', 'a', 'b', 'b', 'c']
 
 
-Counter Is A dict!
-------------------
+Counter.most_common()
+----------------------
 .. sourcecode:: python
 
-    # Count for a given element:
-    counter = Counter('aaabbc')
-    counter['a'] # 3
-    counter['d'] # ?
+    c = Counter('aaabbc')
+    c.most_common()
+    # ?
 
 
-Counter Is A dict!
-------------------
+Counter.most_common()
+----------------------
 .. sourcecode:: python
 
-    # Count for a given element:
-    counter = Counter('aaabbc')
-    counter['a'] # 3
-    counter['d'] # 0
+    c = Counter('aaabbc')
+    c.most_common()
+    # [('a', 3), ('b', 2), ('c', 1)]
+
+
+Counter.most_common(N)
+----------------------
+.. sourcecode:: python
+
+    c = Counter('aaabbc')
+    c.most_common(2)
+    # ?
+
+
+Counter.most_common(N)
+----------------------
+.. sourcecode:: python
+
+    c = Counter('aaabbc')
+    c.most_common(2)
+    # [('a', 3), ('b', 2)]
+
+
+Counter.update()
+----------------
+.. sourcecode:: python
+
+    c = Counter('aaabb')
+    c.update(a=2, b=1)
+    c # ?
+
+
+Counter.update()
+----------------
+.. sourcecode:: python
+
+    c = Counter('aaabb')
+    c.update(a=2, b=1)
+    c # Counter({'a': 5, 'b': 3})
+
+
+Counter.substract()
+-------------------
+.. sourcecode:: python
+
+    c = Counter('aaabb')
+    c.substract(a=2, b=1)
+    c # ?
+
+
+Counter.substract()
+-------------------
+.. sourcecode:: python
+
+    c = Counter('aaabb')
+    c.substract(a=2, b=1)
+    c # Counter({'a': 1, 'b': 1})
 
 
 Arithmetic Operations
