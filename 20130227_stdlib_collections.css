@@ -1,0 +1,8 @@
+.qrcode {
+    float: right;
+    width: 6em;
+    height: 6em;
+}
+.external:after {
+    content: "" !important;
+}

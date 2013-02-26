@@ -152,20 +152,6 @@ Time Complexity
     ===========    ====    =====
 
 
-Operations
-----------
-.. table::
-
-    ==============    ==============
-    list              deque
-    ==============    ==============
-    l.append(x)       d.append(x)
-    l.pop()           d.pop()
-    l.insert(x, 0)    d.appendleft()
-    l.pop(0)          d.popleft()
-    ==============    ==============
-
-
 Initialization
 --------------
 .. sourcecode:: python
@@ -274,7 +260,7 @@ Initialization
 --------------
 .. sourcecode:: python
 
-    f = lambda: None # factory
+    # defaultdict(factory, *a, **kw)
     defaultdict(f)
     defaultdict(f, {'foo': 'bar'})
     defaultdict(f, [('foo', 'bar')])
@@ -286,7 +272,7 @@ What's a factory?
 
 Any callable without required arguments:
 
-* functions
+* functions (named or anonymous)
 * classes
 * instance methods
 
@@ -296,13 +282,13 @@ Factory examples:
 .. class:: borderless
 
     =========    =========
-    bool()       
-    int()        
-    float()      
-    complex()    
-    str()        
-    list()       
-    dict()       
+    bool       
+    int        
+    float      
+    complex    
+    str        
+    list       
+    dict       
     =========    =========
 
 
@@ -312,12 +298,12 @@ Factory examples:
 
     =========    =========
     bool()       ``False``
-    int()        
-    float()      
-    complex()    
-    str()        
-    list()       
-    dict()       
+    int          
+    float        
+    complex      
+    str          
+    list         
+    dict         
     =========    =========
 
 
@@ -328,11 +314,11 @@ Factory examples:
     =========    =========
     bool()       ``False``
     int()        ``0``
-    float()      
-    complex()    
-    str()        
-    list()       
-    dict()       
+    float        
+    complex      
+    str          
+    list         
+    dict         
     =========    =========
 
 
@@ -344,10 +330,10 @@ Factory examples:
     bool()       ``False``
     int()        ``0``
     float()      ``0.0``
-    complex()    
-    str()        
-    list()       
-    dict()       
+    complex      
+    str          
+    list         
+    dict         
     =========    =========
 
 
@@ -360,9 +346,9 @@ Factory examples:
     int()        ``0``
     float()      ``0.0``
     complex()    ``0j``
-    str()        
-    list()       
-    dict()       
+    str          
+    list         
+    dict         
     =========    =========
 
 
@@ -376,8 +362,8 @@ Factory examples:
     float()      ``0.0``
     complex()    ``0j``
     str()        ``''``
-    list()       
-    dict()       
+    list         
+    dict         
     =========    =========
 
 
@@ -392,7 +378,7 @@ Factory examples:
     complex()    ``0j``
     str()        ``''``
     list()       ``[]``
-    dict()       
+    dict         
     =========    =========
 
 
@@ -454,7 +440,7 @@ Missing Keys
 .. sourcecode:: python
 
     factory = lambda: 'X'
-    dd = defaultdict(factory, rd)
+    dd = defaultdict(factory, foo='bar')
     dd['foo']     # ?
 
 
@@ -463,7 +449,7 @@ Missing Keys
 .. sourcecode:: python
 
     factory = lambda: 'X'
-    dd = defaultdict(factory, rd)
+    dd = defaultdict(factory, foo='bar')
     dd['foo']     # 'bar'
 
 
@@ -472,7 +458,7 @@ Missing Keys
 .. sourcecode:: python
 
     factory = lambda: 'X'
-    dd = defaultdict(factory, rd)
+    dd = defaultdict(factory, foo='bar')
     dd['foo']     # 'bar'
     dd['missing'] # ?
 
@@ -482,7 +468,7 @@ Missing Keys
 .. sourcecode:: python
 
     factory = lambda: 'X'
-    dd = defaultdict(factory, rd)
+    dd = defaultdict(factory, foo='bar')
     dd['foo']     # 'bar'
     dd['missing'] # 'X'
 
@@ -549,6 +535,30 @@ Initialization
 .. sourcecode:: python
 
     # cls = namedtuple(name, fields)
+
+
+Initialization
+--------------
+.. sourcecode:: python
+
+    # cls = namedtuple(name, fields)
+    namedtuple('Point', ['x', 'y', 'z'])
+
+
+Initialization
+--------------
+.. sourcecode:: python
+
+    # cls = namedtuple(name, fields)
+    namedtuple('Point', ['x', 'y', 'z'])
+    namedtuple('Point', 'x y z')
+
+
+Initialization
+--------------
+.. sourcecode:: python
+
+    # cls = namedtuple(name, fields)
     namedtuple('Point', ['x', 'y', 'z'])
     namedtuple('Point', 'x y z')
     namedtuple('Point', 'x,y,z')
@@ -566,12 +576,59 @@ Initialization
     #     not **instances**.
 
 
+Creation
+--------
+.. sourcecode:: python
+
+    Point = namedtuple('Point', 'x y z')
+
+
+Creation
+--------
+.. sourcecode:: python
+
+    Point = namedtuple('Point', 'x y z')
+
+
+Creation
+--------
+.. sourcecode:: python
+
+    Point = namedtuple('Point', 'x y z')
+    p = Point(23, 10, 85)
+
+
+Creation
+--------
+.. sourcecode:: python
+
+    Point = namedtuple('Point', 'x y z')
+    p = Point(23, 10, 85)
+    p = Point(x=23, y=10, z=85)
+
+
+Creation
+--------
+.. sourcecode:: python
+
+    Point = namedtuple('Point', 'x y z')
+    p = Point(23, 10, 85)
+    p = Point(x=23, y=10, z=85)
+    p = Point(y=10, x=23, z=85)
+
+
 Accessing Fields
 ----------------
 .. sourcecode:: python
 
-    Point = namedtuple('Point', 'x y z')
-    p = Point(z=85, y=10, x=23)
+    p = Point(x=23, y=10, z=85)
+
+
+Accessing Fields
+----------------
+.. sourcecode:: python
+
+    p = Point(x=23, y=10, z=85)
     p[0] # ?
 
 
@@ -579,8 +636,7 @@ Accessing Fields
 ----------------
 .. sourcecode:: python
 
-    Point = namedtuple('Point', 'x y z')
-    p = Point(z=85, y=10, x=23)
+    p = Point(x=23, y=10, z=85)
     p[0] # 23
 
 
@@ -588,8 +644,7 @@ Accessing Fields
 ----------------
 .. sourcecode:: python
 
-    Point = namedtuple('Point', 'x y z')
-    p = Point(z=85, y=10, x=23)
+    p = Point(x=23, y=10, z=85)
     p[0] # 23
     p.z  # ?
 
@@ -598,8 +653,7 @@ Accessing Fields
 ----------------
 .. sourcecode:: python
 
-    Point = namedtuple('Point', 'x y z')
-    p = Point(z=85, y=10, x=23)
+    p = Point(x=23, y=10, z=85)
     p[0] # 23
     p.z  # 85
 
@@ -618,6 +672,21 @@ Attributes And Methods
 
     p = Point(x=23, y=10, z=85)
     p._fields # ['x', 'y', 'z']
+
+
+Attributes And Methods
+----------------------
+.. sourcecode:: python
+
+    p1 = Point(x=23, y=10, z=85)
+
+
+Attributes And Methods
+----------------------
+.. sourcecode:: python
+
+    p1 = Point(x=23, y=10, z=85)
+    p2 = p1._replace(z=56)
 
 
 Attributes And Methods
@@ -743,6 +812,26 @@ if no items have been added or deleted.
     # Same as d.items()
 
 
+Shortcut (fromkeys)
+-------------------
+.. sourcecode:: python
+
+    d = {}
+    for char in 'abc':
+        d[char] = None
+
+
+Shortcut (fromkeys)
+-------------------
+.. sourcecode:: python
+
+    d = {}
+    for char in 'abc':
+        d[char] = None
+    # Can be written as:
+    d = dict.fromkeys('abc')
+
+
 Bringing Back Order
 -------------------
 
@@ -750,7 +839,6 @@ OrderDict are ordered by insertion order:
 
 .. sourcecode:: python
 
-    s = 'abc'
     d = OrderedDict.fromkeys('abc')
     ''.join(d) # ?
 
@@ -762,7 +850,6 @@ OrderDict are ordered by insertion order:
 
 .. sourcecode:: python
 
-    s = 'abc'
     d = OrderedDict.fromkeys('abc')
     ''.join(d) # 'abc'
 
@@ -868,8 +955,13 @@ Dict subclass for counting hashable objects.
 
 Introduced in python 2.7.
 
-Basically a ``defaultdict(int)``,
-with some useful methods added.
+
+5: collections.Counter
+----------------------
+
+Basically a ``defaultdict(int)``.
+
+With some useful methods for counting stuff.
 
 
 Initialization
@@ -899,18 +991,6 @@ Counting Characters
 -------------------
 .. sourcecode:: python
 
-    # Improved:
-    counter = {}
-    for letter in 'ababac':
-        current = counter.get(letter, 0)
-        counter[letter] = current + 1
-    counter['a'] # 3
-
-
-Counting Characters
--------------------
-.. sourcecode:: python
-
     # Third approach, with a defaultdict
     counter = defaultdict(int)
     for letter in 'ababac':
@@ -931,7 +1011,6 @@ Counter Is A dict!
 ------------------
 .. sourcecode:: python
 
-    # Count for a given element:
     counter = Counter('aaabbc')
     counter['a'] # ?
 
@@ -940,7 +1019,6 @@ Counter Is A dict!
 ------------------
 .. sourcecode:: python
 
-    # Count for a given element:
     counter = Counter('aaabbc')
     counter['a'] # 3
 
@@ -949,7 +1027,6 @@ Counter Is A dict!
 ------------------
 .. sourcecode:: python
 
-    # Count for a given element:
     counter = Counter('aaabbc')
     counter['a'] # 3
     counter['d'] # ?
@@ -959,7 +1036,6 @@ Counter Is A dict!
 ------------------
 .. sourcecode:: python
 
-    # Count for a given element:
     counter = Counter('aaabbc')
     counter['a'] # 3
     counter['d'] # 0
@@ -969,7 +1045,6 @@ Counter Is A dict!
 ------------------
 .. sourcecode:: python
 
-    # Total number of elements:
     counter = Counter('aaabbc')
     sum(counter.values()) # ?
 
@@ -978,16 +1053,32 @@ Counter Is A dict!
 ------------------
 .. sourcecode:: python
 
-    # Total number of elements:
     counter = Counter('aaabbc')
     sum(counter.values()) # 6
+    # Total number of elements
 
 
 Counter Is A dict!
 ------------------
 .. sourcecode:: python
 
-    # List of unique elements:
+    counter = Counter('aaabbc')
+    len(counter) # ?
+
+
+Counter Is A dict!
+------------------
+.. sourcecode:: python
+
+    counter = Counter('aaabbc')
+    len(counter) # 3
+    # Total number of unique elements:
+
+
+Counter Is A dict!
+------------------
+.. sourcecode:: python
+
     counter = Counter('aaabbc')
     counter.keys()
     # ?
@@ -997,34 +1088,17 @@ Counter Is A dict!
 ------------------
 .. sourcecode:: python
 
-    # List of unique elements:
     counter = Counter('aaabbc')
     counter.keys()
     # ['a', 'b', 'c']
-
-
-Counter Is A dict!
-------------------
-.. sourcecode:: python
-
-    # Total number of unique elements:
-    counter = Counter('aaabbc')
-    len(counter) # ?
-
-
-Counter Is A dict!
-------------------
-.. sourcecode:: python
-
-    # Total number of unique elements:
-    counter = Counter('aaabbc')
-    len(counter) # 3
+    # List of unique elements
 
 
 Counter.elements()
 ----------------------
 .. sourcecode:: python
 
+    # List elements, with repetition
     c = Counter('ababac')
     c.elements()
     # ?
@@ -1034,6 +1108,7 @@ Counter.elements()
 ----------------------
 .. sourcecode:: python
 
+    # List elements, with repetition
     c = Counter('ababac')
     c.elements()
     # ['a', 'a', 'a', 'b', 'b', 'c']
@@ -1043,6 +1118,7 @@ Counter.most_common()
 ----------------------
 .. sourcecode:: python
 
+    # List (element, count)
     c = Counter('aaabbc')
     c.most_common()
     # ?
@@ -1052,6 +1128,7 @@ Counter.most_common()
 ----------------------
 .. sourcecode:: python
 
+    # List (element, count)
     c = Counter('aaabbc')
     c.most_common()
     # [('a', 3), ('b', 2), ('c', 1)]
@@ -1079,6 +1156,7 @@ Counter.update()
 ----------------
 .. sourcecode:: python
 
+    # Add elements
     c = Counter('aaabb')
     c.update(a=2, b=1)
     c # ?
@@ -1088,6 +1166,7 @@ Counter.update()
 ----------------
 .. sourcecode:: python
 
+    # Add elements
     c = Counter('aaabb')
     c.update(a=2, b=1)
     c # Counter({'a': 5, 'b': 3})
@@ -1097,6 +1176,7 @@ Counter.substract()
 -------------------
 .. sourcecode:: python
 
+    # Substract elements
     c = Counter('aaabb')
     c.substract(a=2, b=1)
     c # ?
@@ -1106,6 +1186,7 @@ Counter.substract()
 -------------------
 .. sourcecode:: python
 
+    # Substract elements
     c = Counter('aaabb')
     c.substract(a=2, b=1)
     c # Counter({'a': 1, 'b': 1})
@@ -1208,14 +1289,37 @@ Conclusion (TL;DL)
 Questions?
 ----------
 
-* email: bmispelon@gmail.com
-* https://github.com/bmispelon (for slides)
-* twitter: @bmispelon
+.. image:: qr.svg
+   :class: qrcode
+
+* bmispelon@gmail.com
+* `github.com/bmispelon`__
+* twitter: `@bmispelon`__
 * IRC: bmispelon on Freenode (#python, #django)
 
+__ https://github.com/bmispelon/presentations
+__ https://twitter.com/bmispelon
 
 Bonus: Recipes
 --------------
+
+
+Formatting With Defaults
+------------------------
+.. sourcecode:: python
+
+    d = dict(y='yes', no='no')
+    '%(y)s %(n)s' % d
+    # ?
+
+
+Formatting With Defaults
+------------------------
+.. sourcecode:: python
+
+    d = dict(y='yes', n='no')
+    '%(y)s %(n)s' % d
+    # 'yes no'
 
 
 Formatting With Defaults
@@ -1272,7 +1376,7 @@ Counting Letters
 ----------------
 .. sourcecode:: python
 
-    s = 'a,b.a:a?b'
+    s = 'a,b.a8a?b'
     Counter(c for c in s
             if c.isalpha())
     # ?
@@ -1282,7 +1386,7 @@ Counting Letters
 ----------------
 .. sourcecode:: python
 
-    s = 'a,b.a:a?b'
+    s = 'a,b.a8a?b'
     Counter(c for c in s
             if c.isalpha())
     # Counter({'a': 3, 'b': 2})
@@ -1292,7 +1396,7 @@ Counting Letters (CI)
 ---------------------
 .. sourcecode:: python
 
-    s = 'a,b.A:A?B'
+    s = 'a,b.A8A?B'
     Counter(c.lower() for c in s
             if c.isalpha())
     # ?
@@ -1302,7 +1406,7 @@ Counting Letters (CI)
 ---------------------
 .. sourcecode:: python
 
-    s = 'a,b.A:A?B'
+    s = 'a,b.A8A?B'
     Counter(c.lower() for c in s
             if c.isalpha())
     # Counter({'a': 3, 'b': 2})
@@ -1324,3 +1428,18 @@ Couting words
     text = 'foo bar foo'
     Counter(text.split())
     # Counter({'foo': 2, 'bar': 1})
+
+
+Questions?
+----------
+
+.. image:: qr.svg
+   :class: qrcode
+
+* bmispelon@gmail.com
+* `github.com/bmispelon`__
+* twitter: `@bmispelon`__
+* IRC: bmispelon on Freenode (#python, #django)
+
+__ https://github.com/bmispelon/presentations
+__ https://twitter.com/bmispelon
