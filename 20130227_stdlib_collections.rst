@@ -222,7 +222,7 @@ Print the last 20 lines of a file.
 
 
 Approach 1: Naive
----------------
+-----------------
 .. sourcecode:: python
 
     with open('some_file.txt') as f:
@@ -231,7 +231,7 @@ Approach 1: Naive
 
 
 Approach 2: More Robust
----------------------
+-----------------------
 .. sourcecode:: python
 
     last = []
@@ -244,7 +244,7 @@ Approach 2: More Robust
 
 
 Approach 3: deque
----------------
+-----------------
 .. sourcecode:: python
 
     with open('some_file.txt') as f:
@@ -490,7 +490,7 @@ we want to get a mapping of {date: [amounts]}
 
 
 Approach 1: naive
----------------
+-----------------
 .. sourcecode:: python
 
     d = {}
@@ -501,7 +501,7 @@ Approach 1: naive
 
 
 Approach 2: Improved
-------------------
+--------------------
 .. sourcecode:: python
 
     d = {}
@@ -511,7 +511,7 @@ Approach 2: Improved
 
 
 Approach 3: defaultdict
----------------------
+-----------------------
 .. sourcecode:: python
 
     d = defaultdict(list)
@@ -586,13 +586,6 @@ Initialization
     namedtuple('Point', 'x,y,z')
     # Creates **classes**,
     #     not **instances**.
-
-
-Creation
---------
-.. sourcecode:: python
-
-    Point = namedtuple('Point', 'x y z')
 
 
 Creation
@@ -1134,6 +1127,17 @@ Counter.elements()
     # ['a', 'a', 'a', 'b', 'b', 'c']
 
 
+Counter.elements()
+----------------------
+.. sourcecode:: python
+
+    # List elements, with repetition
+    c = Counter('ababac')
+    c.elements()
+    # ['a', 'a', 'a', 'b', 'b', 'c']
+    # The order is arbitrary!
+
+
 Counter.most_common()
 ----------------------
 .. sourcecode:: python
@@ -1192,23 +1196,23 @@ Counter.update()
     c # Counter({'a': 5, 'b': 3})
 
 
-Counter.substract()
--------------------
+Counter.subtract()
+------------------
 .. sourcecode:: python
 
-    # Substract elements
+    # subtract elements
     c = Counter('aaabb')
-    c.substract(a=2, b=1)
+    c.subtract(a=2, b=1)
     c # ?
 
 
-Counter.substract()
--------------------
+Counter.subtract()
+------------------
 .. sourcecode:: python
 
-    # Substract elements
+    # subtract elements
     c = Counter('aaabb')
-    c.substract(a=2, b=1)
+    c.subtract(a=2, b=1)
     c # Counter({'a': 1, 'b': 1})
 
 
