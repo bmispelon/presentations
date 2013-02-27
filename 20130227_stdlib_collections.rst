@@ -61,6 +61,10 @@ ABC (not presented today).
 1: collections.deque
 --------------------
 
+
+1: collections.deque
+--------------------
+
 List-like container with fast appends and pops on either end.
 
 Introduced in python 2.4.
@@ -217,7 +221,7 @@ Print the last 20 lines of a file.
     $ tail -n 20 some_file.txt
 
 
-Option 1: Naive
+Approach 1: Naive
 ---------------
 .. sourcecode:: python
 
@@ -226,7 +230,7 @@ Option 1: Naive
     print "\n".join(last)
 
 
-Option 2: More Robust
+Approach 2: More Robust
 ---------------------
 .. sourcecode:: python
 
@@ -239,13 +243,17 @@ Option 2: More Robust
     print "\n".join(last)
 
 
-Option 3: deque
+Approach 3: deque
 ---------------
 .. sourcecode:: python
 
     with open('some_file.txt') as f:
         last = deque(f, maxlen=20) ###
     print "\n".join(last)
+
+
+2: collections.defaultdict
+--------------------------
 
 
 2: collections.defaultdict
@@ -481,7 +489,7 @@ Given a list of payments (date, amount),
 we want to get a mapping of {date: [amounts]}
 
 
-Option 1: naive
+Approach 1: naive
 ---------------
 .. sourcecode:: python
 
@@ -492,7 +500,7 @@ Option 1: naive
         d[date].append(amount)
 
 
-Option 2: Improved
+Approach 2: Improved
 ------------------
 .. sourcecode:: python
 
@@ -502,13 +510,17 @@ Option 2: Improved
         l.append(amount)
 
 
-Option 3: defaultdict
+Approach 3: defaultdict
 ---------------------
 .. sourcecode:: python
 
     d = defaultdict(list)
     for date, amount in L:
         d[date].append(amount)
+
+
+3: collections.namedtuple
+-------------------------
 
 
 3: collections.namedtuple
@@ -738,6 +750,10 @@ Attributes And Methods
 4: collections.OrderedDict
 --------------------------
 
+
+4: collections.OrderedDict
+--------------------------
+
 Dict subclass that remembers the order entries were added.
 
 Introduced in python 2.7.
@@ -946,6 +962,10 @@ Comparisons
     rd1 == rd2 # True
     od1 == od2 # False
     od1 == rd2 # True
+
+
+5: collections.Counter
+----------------------
 
 
 5: collections.Counter
