@@ -6,3 +6,15 @@
 .external:after {
     content: "" !important;
 }
+table.history td {
+    text-align: center;
+}
+table.history td.yes {
+    background-color: rgb(223, 240, 216);
+}
+table.history td.no {
+    background-color: rgb(242, 222, 222);
+}
+table.history td.deprecated {
+    background-color: rgb(252, 248, 227);
+}
