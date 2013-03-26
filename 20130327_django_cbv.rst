@@ -7,6 +7,28 @@ GCBV: TL;DR
 
     from django.views import generic
 
+Class-based generic views in Django.
+
+
+About me
+--------
+
+Baptiste Mispelon (bmispelon)
+
+I've been using django for almost 4 years (started with 1.1).
+
+Currently doing web development with django at `M2BPO`__.
+
+__ http://www.m2bpo.fr
+
+
+Introduction
+------------
+
+Views, class-based views, generic views, function-based views: it's confusing.
+
+I'm going to try and clarify things.
+
 
 Presentation
 ------------
@@ -18,13 +40,66 @@ Presentation
 * **Tips**: :black:`making it harder to shoot yourself in the foot.`
 
 
+Presentation
+------------
+
+* **Views**: :navy:`definition, contrived examples.`
+* **Class-based views**: :black:`making views out of classes.`
+* **Generic views**: :black:`history, comparison, implementation.`
+* **Mixins**: :black:`building blocks for reusable views.`
+* **Tips**: :black:`making it harder to shoot yourself in the foot.`
+
+
+Let's start with the basics
+---------------------------
+
+
 What's a view?
 --------------
 
-The view contract (3 rules):
-    * Callable
-    * Takes a request (+captured URL parameters)
-    * Return a response object
+
+What's a view?
+--------------
+
+The view contract.
+
+
+What's a view?
+--------------
+
+The view contract.
+
+A view is:
+
+
+What's a view?
+--------------
+
+The view contract.
+
+A view is:
+    * a callable
+
+
+What's a view?
+--------------
+
+The view contract.
+
+A view is:
+    * a callable
+    * that takes a request argument (+captured URL parameters)
+
+
+What's a view?
+--------------
+
+The view contract.
+
+A view is:
+    * a callable
+    * that takes a request argument (+captured URL parameters)
+    * and return a response object
 
 
 What's a "callable"?
@@ -42,8 +117,8 @@ A function
     f() # 42
 
 
-A function
-----------
+A function (view)
+-----------------
 
 .. sourcecode:: python
 
@@ -61,16 +136,16 @@ An anonymous function
     f() # 42
 
 
-An anonymous function
----------------------
+An anonymous function (view)
+----------------------------
 
 .. sourcecode:: python
 
     lambda request, foo: HttpResponse('OK: %s' % foo)
 
 
-A method
---------
+A method on an instance
+-----------------------
 
 .. sourcecode:: python
 
@@ -85,8 +160,8 @@ A method
     f() # 42
 
 
-A method
---------
+A method on an instance (view)
+------------------------------
 
 .. sourcecode:: python
 
@@ -97,8 +172,8 @@ A method
     method_view = ViewClass().view
 
 
-A classmethod
--------------
+A method on a class
+-------------------
 
 .. sourcecode:: python
 
@@ -112,8 +187,8 @@ A classmethod
     f() # 42
 
 
-A classmethod
--------------
+A method on a class (view)
+--------------------------
 
 .. sourcecode:: python
 
@@ -139,8 +214,8 @@ An callable instance
     f() # 42
 
 
-An callable instance
---------------------
+An callable instance (view)
+---------------------------
 
 .. sourcecode:: python
 
@@ -158,13 +233,13 @@ A class
 
     class F(int):
         def __init__(self)
-            super(F, self).__init__(42)
+            int.__init__(42)
 
     F() # 42
 
 
-A class
--------
+A class (view)
+--------------
 
 .. sourcecode:: python
 
@@ -187,8 +262,8 @@ A class
     F() # 42
 
 
-A class
--------
+A class (view)
+--------------
 
 .. sourcecode:: python
 
@@ -202,7 +277,11 @@ A class
 Presentation
 ------------
 
-Interlude
+* **Views**: :gray:`definition, contrived examples.`
+* **Class-based views**: :navy:`making views out of classes.`
+* **Generic views**: :black:`history, comparison, implementation.`
+* **Mixins**: :black:`building blocks for reusable views.`
+* **Tips**: :black:`making it harder to shoot yourself in the foot.`
 
 
 Class-Based Views (CBV)
@@ -226,7 +305,7 @@ Implements a ``dispatch`` method, which will route requests to a different metho
 based on the HTTP verb (GET, POST, PUT, DELETE, ...).
 
 A classmethod ``as_view`` that creates and return the actual view callable
-(which calls the instance's ``dispatch`` under the hood').
+(which calls the instance's ``dispatch`` under the hood).
 
 
 Simple example
@@ -248,32 +327,12 @@ Simple example
     view_hu = MyView.as_view(template_name='szia.html')
 
 
-Anatomy of generic.View
------------------------
-
-.. sourcecode:: python
-
-    class View(object):
-        def __init__(self, **initkwargs):
-            for k, v in initkwargs.items():
-                setattr(self, k, v) # self.foo = bar
-
-        @classmethod
-        def as_view(cls, **initkwargs):
-            cbv = cls(**initkwargs)
-            return cbv.dispatch
-
-        def dispatch(self, request, *args, **kwargs):
-            handler = getattr(self, request.method)
-            return handler(request, *args, **kwargs)
-
-
 Advantages
 ----------
 
 * Declarative style
 
-* Reusability through inheritance/composition
+* Reusability through inheritance
 
 * Good code isolation (methods)
 
@@ -283,7 +342,11 @@ Advantages
 Presentation
 ------------
 
-Interlude
+* **Views**: :gray:`definition, contrived examples.`
+* **Class-based views**: :gray:`making views out of classes.`
+* **Generic views**: :navy:`history, comparison, implementation.`
+* **Mixins**: :black:`building blocks for reusable views.`
+* **Tips**: :black:`making it harder to shoot yourself in the foot.`
 
 
 Generic views
@@ -352,8 +415,28 @@ The new way: CBV
 ----------------
 
 * Clear separation of request parameters and extension hooks;
-* Extensible through python class inheritance/composition;
+* Extensible through python class inheritance;
 * Centralized logic through mixins.
+
+
+How does it work?
+-----------------
+
+It's simple...
+
+
+Simple, right?
+--------------
+
+.. image:: cbv.png
+
+
+OK, maybe not
+-------------
+
+But that's just the internal implementation, you don't have to know it by heart.
+
+(Though it helps, and it starts to make sens after a while)
 
 
 Not all rainbows
@@ -362,31 +445,45 @@ Not all rainbows
 * Verbosity
 * Performance cost (measure)
 * Lots of layers (RKK)
-* Bad documentation (getting better)
+* Documentation (was bad, is getting better)
 
 
-Not all rainbows
-----------------
+How to use a generic view?
+--------------------------
 
-.. image:: cbv.png
-
-
-The generic views
------------------
-
-* RedirectView
-* TemplateView
-* ListView
-* DetailView
-* FormView
-* CreateView
-* UpdateView
-* DeleteView
-* (and some date-related ones, not covered here)
+Two ways:
+    * Pass attributes to ``as_view``
+    * Subclass
 
 
-Examples
---------
+Simple case: passing attributes to ``as_view``
+----------------------------------------------
+
+.. sourcecode:: python
+
+    view = CreateView.as_view(
+                model=MyOwnModel,
+                template_name='custom_template.html'
+    )
+
+
+Custom logic: subclassing
+-------------------------
+
+.. sourcecode:: python
+
+    class ContactView(DeleteView):
+        form_class = ContactForm
+        
+        def form_valid(self, form):
+            form.send_email()
+            return super(ContactView, self).form_valid(form)
+
+    view = ContactView.as_view()
+
+
+Examples of generic view usage
+------------------------------
 
 
 Rendering a template
@@ -564,10 +661,28 @@ Delete a model
     )
 
 
+All the generic views
+---------------------
+
+* RedirectView
+* TemplateView
+* ListView
+* DetailView
+* FormView
+* CreateView
+* UpdateView
+* DeleteView
+* (and some date-related ones, not covered here)
+
+
 Presentation
 ------------
 
-Interlude
+* **Views**: :gray:`definition, contrived examples.`
+* **Class-based views**: :gray:`making views out of classes.`
+* **Generic views**: :gray:`history, comparison, implementation.`
+* **Mixins**: :navy:`building blocks for reusable views.`
+* **Tips**: :black:`making it harder to shoot yourself in the foot.`
 
 
 What is a mixin?
@@ -577,7 +692,7 @@ Just a normal python class.
 
 Not instanciated on its own.
 
-Usually needs to be combined with a more "concrete" one to fully work.
+Needs to be combined with a more "concrete" one to fully work.
 
 
 Why use them?
@@ -642,12 +757,11 @@ Usage
         created_on = models.DateTimeField(default=timezone.now)
         body = models.TextField()
 
-    class MyArticlesListView(LoginRequiredMixin,
+    class MyCommentsListView(LoginRequiredMixin,
                              UserQuerysetMixin, ListView):
-        model = Article
+        model = Comment
 
-    # Will only show articles for which the current logged-in
-    # user is the owner.
+    # Will only show the comments of the current user.
 
 
 Usage (2)
@@ -655,16 +769,16 @@ Usage (2)
 
 .. sourcecode:: python
 
-    class Comment(forms.ModelForm):
+    class CommentForm(forms.ModelForm):
         class Meta:
-            model = Article
+            model = Comment
             fields = ('body',)
 
     class ArticleUpdateView(LoginRequiredMixin, UpdateView):
-        model = Article
-        form_class = ArticleForm
+        model = Comment
+        form_class = CommentForm
 
-    # Will let any logged-in user updated any post
+    # Will let any logged-in user update any comment
     # if they know the id.
 
 
@@ -675,15 +789,15 @@ Usage (2)
 
     class Comment(forms.ModelForm):
         class Meta:
-            model = Article
+            model = Comment
             fields = ('body',)
 
     class ArticleUpdateView(LoginRequiredMixin,
                             UserQuerysetMixin, UpdateView):
-        model = Article
-        form_class = ArticleForm
+        model = Comment
+        form_class = CommentForm
 
-    # Will only let a user update the articles he/she authored.
+    # Will only let a user update the comments he/she authored.
     # Will raise a 404 otherwise.
 
 
@@ -705,11 +819,11 @@ Usage
 
 .. sourcecode:: python
 
-    class ArticleListView(SelectRelatedMixin, ListView):
-        model = Article
+    class CommentListView(SelectRelatedMixin, ListView):
+        model = Comment
         select_related = ('article',)
 
-    # will perform Article.objects.select_related('article')
+    # will perform Comment.objects.select_related('article')
 
 
 Combining
@@ -717,18 +831,22 @@ Combining
 
 .. sourcecode:: python
 
-    class MyArticleListView(LoginRequiredMixin, UserQuerysetMixin,
+    class MyCommentsListView(LoginRequiredMixin, UserQuerysetMixin,
                             SelectRelatedMixin, ListView):
-        model = Article
+        model = Comment
         select_related = ('article',)
 
-    # Article.objects.filter(user=user).select_related('article')
+    # Comment.objects.filter(user=user).select_related('article')
 
 
 Presentation
 ------------
 
-Interlude
+* **Views**: :gray:`definition, contrived examples.`
+* **Class-based views**: :gray:`making views out of classes.`
+* **Generic views**: :gray:`history, comparison, implementation.`
+* **Mixins**: :gray:`building blocks for reusable views.`
+* **Tips**: :navy:`making it harder to shoot yourself in the foot.`
 
 
 In practice
@@ -737,23 +855,23 @@ In practice
 Only a few attributes/methods are commonly changed:
 
 * **Attributes**: ``template_name``, ``model``, ``form_class``,
-                  ``pk_url_kwarg``, ``context_object_name``
+                  ``pk_url_kwarg``, ``context_object_name``, ...
 
-* **Methods**: ``get_queryset``, ``get_form_kwargs``, ``get_form_initial``
+* **Methods**: ``get_queryset``, ``get_form_kwargs``, ``get_form_initial``, ...
 
 
 Tips for not shooting yourself in the foot
 ------------------------------------------
 
-Don't force a round peg through a square hole: fallback to ``generic.View`` if things get messy.
+Fallback to ``generic.View`` if the code gets messy.
 
-Don't complicate your mixins: make them do one thing only but use lots of them.
+Keep your mixins simple: they should only do one thing.
 
-Have your mixins inherit from ``object`` (or another mixin), never from a concrete view.
+Keep your inheritance chain simple: have your mixins inherit from ``object``.
 
-Read left to right: mixins on the left, one single view on the right.
+Only inherit from one single view (with mixins on the left).
 
-Always call ``super(...)`` when overriding a method (don't break the chain).
+Don't break the chain: always call ``super(...)``.
 
 
 Style tip: urls.py
@@ -807,7 +925,45 @@ Style tip: urls.py
     url(r'^/foo/$', my_view) # even better for debugging
 
 
-Presentation
-------------
+Conclusion
+----------
 
-Interlude
+* Generic views are awesome
+* Class-based views are awesome
+* Mixins are awesome
+* But you can keep using regular functions, they'll always work.
+
+
+Questions?
+----------
+
+.. image:: qr.svg
+   :class: qrcode
+
+* bmispelon@gmail.com
+* `github.com/bmispelon`__
+* twitter: `@bmispelon`__
+* IRC: bmispelon on Freenode (#python, #django)
+
+__ https://github.com/bmispelon/presentations
+__ https://twitter.com/bmispelon
+
+
+Bonus: simplified ``generic.View``
+----------------------------------
+
+.. sourcecode:: python
+
+    class View(object):
+        def __init__(self, **initkwargs):
+            for k, v in initkwargs.items():
+                setattr(self, k, v) # self.foo = bar
+
+        @classmethod
+        def as_view(cls, **initkwargs):
+            cbv = cls(**initkwargs)
+            return cbv.dispatch
+
+        def dispatch(self, request, *args, **kwargs):
+            handler = getattr(self, request.method)
+            return handler(request, *args, **kwargs)
