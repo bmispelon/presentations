@@ -472,7 +472,7 @@ Custom logic: subclassing
 
 .. sourcecode:: python
 
-    class ContactView(DeleteView):
+    class ContactView(FormView):
         form_class = ContactForm
         
         def form_valid(self, form):
@@ -563,7 +563,7 @@ Display a particular model
 
     article_detail = generic.DetailView(
         model=Article,
-        template_name='blog/article_detail.hml',
+        template_name='blog/article_detail.html',
     )
 
 
