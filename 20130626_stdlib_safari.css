@@ -1,0 +1,23 @@
+.external:after {
+    content: "" !important;
+}
+
+table.builtins {
+    font-size: 50%;
+}
+table.builtins td em {
+    display: none;
+}
+.code.bad {
+    background: #fbb;
+}
+.code.good {
+    background: #bfb;
+}
+
+#unicode code,
+#import-unicodedata code {
+    font-size: 80%;
+}
+
+
