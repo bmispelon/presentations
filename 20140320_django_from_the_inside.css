@@ -1,0 +1,68 @@
+.floatleft {
+    float: left;
+    margin-right: 4%;
+}
+.fullheight {
+    /* For a page height of 768px */
+    /* height: 632px; */
+    height: 2000px;
+}
+.strike {
+    text-decoration: line-through;
+}
+.external:after {
+    content: "" !important; /* Remove stuff after <a> */
+}
+
+.current {
+    color: #000 !important;
+}
+
+strong {
+    color: #092E20;
+}
+
+#slide0 {
+    background: #092E20;
+    color: #fff;
+}
+#slide0 .container {
+    /* For a page height of 768px */
+    /* height: 412px; */
+}
+
+/* XXX: adjust according to final Y resolution */
+#what-is-django img {height: 550px;}
+#how-is-django-developed img {height: 550px;}
+#how-to-contribute img {height: 550px;}
+
+#what-is-django,
+#how-is-django-developed,
+#how-to-contribute,
+#dziekuje {
+    background: #092E20;
+    color: #fff;
+    text-align: center;
+}
+
+#the-dsf strong {
+    font-size: 150%;
+}
+
+#the-core-team img,
+#django-dashboard img {
+    width: 100%;
+}
+
+#mailing-lists span.pre {
+    color: #092E20;
+    font-weight: bold;
+}
+
+#dziekuje .container {
+    font-size: 400%;
+}
+
+#bonus-my-merge-workflow pre {
+    font-size: 70%;
+}
